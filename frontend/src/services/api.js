@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const api = axios.create({ baseURL: '/api', withCredentials: true });
+const baseURL = import.meta.env.VITE_API_URL || '/api';
+const api = axios.create({ baseURL, withCredentials: true });
 
 api.interceptors.response.use(
   r => r,
@@ -8,7 +9,7 @@ api.interceptors.response.use(
     if (err.response?.status === 401 && !err.config._retry) {
       err.config._retry = true;
       try {
-        await axios.post('/api/auth/refresh-token', {}, { withCredentials: true });
+        await axios.post(`${baseURL}/auth/refresh-token`, {}, { withCredentials: true });
         return api(err.config);
       } catch { window.location.href = '/login'; }
     }
