@@ -32,7 +32,7 @@ app.use(morgan('dev'));
 
 // Rate limiting
 const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100, message: { error: 'Too many requests' } });
-const authLimiter = rateLimit({ windowMs: 60 * 1000, max: 5, message: { error: 'Too many auth attempts' } });
+const authLimiter = rateLimit({ windowMs: 60 * 1000, max: 30, message: { error: 'Too many auth attempts' } });
 app.use('/api/auth', authLimiter);
 app.use('/api', limiter);
 
